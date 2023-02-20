@@ -1,2 +1,5 @@
+.vscode/*
 node_modules
 packages
+**/**.css
+**/**.css.map
