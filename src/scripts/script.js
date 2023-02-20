@@ -83,6 +83,16 @@ const writeAnswer = (answer = "") => {
     return post
 }
 
+const createBlockQuestion = () => {
+    const divMain = document.createElement("div")
+
+    divMain.classList.add("block-question")
+
+    addElement(chat, divMain)
+
+    return divMain
+}
+
 const addElement = (parent, child) => {
     parent.appendChild(child)
 }
@@ -105,7 +115,10 @@ const getLocalStorageSettings = (key = "") => {
     try {
         return JSON.parse(localStorage.getItem(key)).value
     } catch (err) {
-        return null
+        const divMain = createBlockQuestion()
+        const answer = writeAnswer("Cannot load settings")
+
+        addElement(divMain, answer)
     }
 }
 
@@ -113,7 +126,10 @@ const removeLocalStorageSettings = ({ key = "", clear = false }) => {
     try {
         !clear ? localStorage.removeItem(key) : localStorage.clear()
     } catch (err) {
-        console.log(err)
+        const divMain = createBlockQuestion()
+        const answer = writeAnswer("Cannot remove settings")
+
+        addElement(divMain, answer)
     }
 }
 
@@ -121,23 +137,26 @@ const saveLocalStorageSettings = ({ key = "", value = {} }) => {
     try {
         localStorage.setItem(key, JSON.stringify({ value }))
     } catch (err) {
-        console.log(err)
+        const divMain = createBlockQuestion()
+        const answer = writeAnswer("Cannot save settings")
+
+        addElement(divMain, answer)
+    }
+}
+
+const clearHistory = () => {
+    if (MAP_SETTINGS.history.isLimit) {
+        while (document.querySelectorAll(".block-question").length > MAP_SETTINGS.history.limit) {
+            document.querySelectorAll(".block-question")[0].remove()
+        }
     }
 }
 
 async function sendQuestion() {
-    const divMain = document.createElement("div")
+    const divMain = createBlockQuestion()
     const question = inputQuestion.value
 
-    divMain.classList.add("block-question")
-
-    addElement(chat, divMain)
-
-    if (MAP_SETTINGS.history.isLimit) {
-        if (document.querySelectorAll(".block-question").length > MAP_SETTINGS.history.limit) {
-            document.querySelectorAll(".block-question")[0].remove()
-        }
-    }
+    clearHistory()
 
     const elQuestion = writeQuestion(question)
 
@@ -152,6 +171,15 @@ async function sendQuestion() {
     addElement(divMain, elAnswer)
 
     chatContent.scrollTop = chatContent.scrollHeight
+
+    if (!MAP_SETTINGS.apiKey) {
+        elAnswer.childNodes[1].innerHTML = `ERROR: API Key not provided`
+
+        enableInputQuestion()
+
+        chatContent.scrollTop = chatContent.scrollHeight
+        return
+    }
 
     const response = await requestApi(question)
 
@@ -195,6 +223,8 @@ const saveSettings = () => {
     saveLocalStorageSettings({key: "settings.history.isLimit", value: MAP_SETTINGS.history.isLimit})
     saveLocalStorageSettings({key: "settings.history.limit", value: MAP_SETTINGS.history.limit})
 
+    clearHistory()
+
     closeSettings()
 }
 
@@ -208,6 +238,7 @@ const resetSettings = () => {
     MAP_SETTINGS_ELEMENTS.inputKey.value = null
     MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked = false
     MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = 0
+
     toggleSettingLimitHistory(false)
 }
 
@@ -215,7 +246,7 @@ const toggleSettingLimitHistory = (value) => {
     boxLengthLimitHistory.classList.toggle("active", value)
 
     if (value) {
-        MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = 1   
+        MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = MAP_SETTINGS.history.limit || 1
     }
 }
 
@@ -223,7 +254,7 @@ window.onload = () => {
     MAP_SETTINGS.apiKey = getLocalStorageSettings("settings.key")
     MAP_SETTINGS.history.isLimit = getLocalStorageSettings("settings.history.isLimit")
     MAP_SETTINGS.history.limit = getLocalStorageSettings("settings.history.limit")
-    
+
     inputQuestion.addEventListener("keypress", (e) => {
         if (inputQuestion.value && e.key === "Enter") {sendQuestion()}
     })
