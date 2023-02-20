@@ -26,6 +26,20 @@ body {
   color: white;
 }
 
+#input-box-length-limit-history {
+  display: none;
+}
+#input-box-length-limit-history.active {
+  display: flex;
+}
+
+.line {
+  width: 100%;
+  height: 0px;
+  border-top: 1px solid #77798a;
+  margin-block: 8px;
+}
+
 .bt.input {
   display: flex;
   align-items: center;
@@ -67,8 +81,8 @@ body {
   position: absolute;
   top: 5px;
   right: 5px;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
 }
 .bt.icon img {
   width: 100%;
@@ -117,6 +131,10 @@ body {
   flex-direction: column;
   gap: 4px;
 }
+.panel-settings .settings .list .input-box.checkbox {
+  flex-direction: row;
+  align-items: center;
+}
 .panel-settings .settings .list .input-box input {
   padding: 4px 6px;
   background-color: #1d1e23;
@@ -125,6 +143,11 @@ body {
 }
 .panel-settings .settings .list .input-box label {
   margin-left: 4px;
+}
+.panel-settings .settings .list .input-box .input-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 .panel-settings .actions {
   display: flex;
