@@ -2,7 +2,7 @@ const inputQuestion = document.getElementById("input-question")
 const chatContent = document.querySelector(".panel-chat")
 const chat = document.getElementById("chat")
 
-const OPEN_AI_API_KEY = "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"
+const OPEN_AI_API_KEY = ""
 
 const requestApi = async(body = "") => {
     const response = await fetch("https://api.openai.com/v1/completions", {
