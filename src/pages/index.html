@@ -33,11 +33,13 @@
         <div class="settings">
             <div class="list">
                 <div class="input-box">
+                    <div class="input-box-header"><span>Key</span></div>
                     <label for="input-key">Inform a KEY</label>
                     <input type="text" name="input-key" id="input-key">
                 </div>
                 <div class="line"></div>
                 <div class="input-box">
+                    <div class="input-box-header"><span>History</span></div>
                     <div class="input-box checkbox">
                         <label for="input-limit-history">Limit History</label>
                         <input type="checkbox" id="input-limit-history">
@@ -46,6 +48,18 @@
                     <div class="input-box" id="input-box-length-limit-history">
                         <label for="input-length-limit-history">Inform the maximum size of the history</label>
                         <input value="1" type="number" min="1" name="input-length-limit-history" id="input-length-limit-history">
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="input-box">
+                    <div class="input-box-header"><span>Request Parameters</span></div>
+                    <div class="input-box">
+                        <label for="input-parameter-tokens">Inform the total number of characters</label>
+                        <input type="number" min="1" name="input-parameter-tokens" id="input-parameter-tokens">
+                    </div>
+                    <div class="input-box">
+                        <label for="input-parameter-temperature">Inform the creativity rate of the responses.</label>
+                        <input type="number" min="0" name="input-parameter-temperature" id="input-parameter-temperature">
                     </div>
                 </div>
                 <div class="line"></div>

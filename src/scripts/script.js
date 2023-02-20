@@ -14,6 +14,8 @@ const MAP_SETTINGS_ELEMENTS = {
     inputKey: document.getElementById("input-key"),
     inputLimitHistory: document.getElementById("input-limit-history"),
     inputLengthLimitHistory: document.getElementById("input-length-limit-history"),
+    tokens: document.getElementById("input-parameter-tokens"),
+    temperature: document.getElementById("input-parameter-temperature")
 }
 
 const MAP_SETTINGS = {
@@ -21,6 +23,10 @@ const MAP_SETTINGS = {
     history: {
         isLimit: false,
         limit: 0,
+    },
+    parameters: {
+        tokens: 2048,
+        temperature: 0.5
     }
 }
 
@@ -35,8 +41,8 @@ const requestApi = async(body = "") => {
         body: JSON.stringify({
             model: "text-davinci-003",
             prompt: body,
-            max_tokens: 2048,
-            temperature: 0.5,
+            max_tokens: MAP_SETTINGS.parameters.tokens,
+            temperature: MAP_SETTINGS.parameters.temperature,
         }),
     }).then(res => res.json()).then(res => {
         if (res.error) { return { error: res.error } }
@@ -113,8 +119,10 @@ const enableInputQuestion = () => {
 
 const getLocalStorageSettings = (key = "") => {
     try {
-        return JSON.parse(localStorage.getItem(key)).value
+        const response = JSON.parse(localStorage.getItem(key))
+        return response ? response.value : null
     } catch (err) {
+        console.log(err)
         const divMain = createBlockQuestion()
         const answer = writeAnswer("Cannot load settings")
 
@@ -205,6 +213,8 @@ const openSettings = () => {
     MAP_SETTINGS_ELEMENTS.inputKey.value = MAP_SETTINGS.apiKey
     MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked = MAP_SETTINGS.history.isLimit
     MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = MAP_SETTINGS.history.limit
+    MAP_SETTINGS_ELEMENTS.tokens.value = MAP_SETTINGS.parameters.tokens
+    MAP_SETTINGS_ELEMENTS.temperature.value = MAP_SETTINGS.parameters.temperature
 
     toggleSettingLimitHistory(MAP_SETTINGS.history.isLimit)
     toggleSettings(true)
@@ -218,10 +228,14 @@ const saveSettings = () => {
     MAP_SETTINGS.apiKey = MAP_SETTINGS_ELEMENTS.inputKey.value
     MAP_SETTINGS.history.isLimit = MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked
     MAP_SETTINGS.history.limit = MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked ? Number(MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value) : 0
+    MAP_SETTINGS.parameters.tokens = Number(MAP_SETTINGS_ELEMENTS.tokens.value)
+    MAP_SETTINGS.parameters.temperature = Number(MAP_SETTINGS_ELEMENTS.temperature.value)
 
     saveLocalStorageSettings({key: "settings.key", value: MAP_SETTINGS.apiKey})
     saveLocalStorageSettings({key: "settings.history.isLimit", value: MAP_SETTINGS.history.isLimit})
     saveLocalStorageSettings({key: "settings.history.limit", value: MAP_SETTINGS.history.limit})
+    saveLocalStorageSettings({key: "settings.parameters.tokens", value: MAP_SETTINGS.parameters.tokens})
+    saveLocalStorageSettings({key: "settings.parameters.temperature", value: MAP_SETTINGS.parameters.temperature})
 
     clearHistory()
 
@@ -234,10 +248,14 @@ const resetSettings = () => {
     MAP_SETTINGS.apiKey = null
     MAP_SETTINGS.history.isLimit = false
     MAP_SETTINGS.history.limit = 0
+    MAP_SETTINGS.parameters.tokens = 2048
+    MAP_SETTINGS.parameters.temperature = 0.5
 
     MAP_SETTINGS_ELEMENTS.inputKey.value = null
     MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked = false
     MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = 0
+    MAP_SETTINGS_ELEMENTS.tokens.value = 2048
+    MAP_SETTINGS_ELEMENTS.temperature.value = 0.5
 
     toggleSettingLimitHistory(false)
 }
@@ -251,9 +269,13 @@ const toggleSettingLimitHistory = (value) => {
 }
 
 window.onload = () => {
-    MAP_SETTINGS.apiKey = getLocalStorageSettings("settings.key")
-    MAP_SETTINGS.history.isLimit = getLocalStorageSettings("settings.history.isLimit")
-    MAP_SETTINGS.history.limit = getLocalStorageSettings("settings.history.limit")
+    MAP_SETTINGS.apiKey = getLocalStorageSettings("settings.key") || null
+    MAP_SETTINGS.history.isLimit = getLocalStorageSettings("settings.history.isLimit") || false
+    MAP_SETTINGS.history.limit = getLocalStorageSettings("settings.history.limit") || 0
+    MAP_SETTINGS.parameters.tokens = getLocalStorageSettings("settings.parameters.tokens") || 2048
+    MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.limit") || 0.5
+
+    console.log(MAP_SETTINGS)
 
     inputQuestion.addEventListener("keypress", (e) => {
         if (inputQuestion.value && e.key === "Enter") {sendQuestion()}

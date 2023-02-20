@@ -37,7 +37,7 @@ body {
   width: 100%;
   height: 0px;
   border-top: 1px solid #77798a;
-  margin-block: 8px;
+  margin-block: 8px 4px;
 }
 
 .bt.input {
@@ -124,6 +124,9 @@ body {
   flex-direction: row;
   align-items: center;
 }
+.panel-settings .settings .list .input-box .input-box-header {
+  font-size: 14px;
+}
 .panel-settings .settings .list .input-box input {
   padding: 4px 6px;
   background-color: #1d1e23;
@@ -151,9 +154,13 @@ body {
   gap: 12px;
   height: 100%;
   width: 80%;
+  pointer-events: all;
+  cursor: all;
 }
 .panel.focus-out {
   opacity: 0.8;
+  cursor: default;
+  pointer-events: none;
 }
 .panel .actions-menu {
   position: absolute;
