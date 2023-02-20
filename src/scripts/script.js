@@ -8,25 +8,18 @@ const btSettingsClose = document.getElementById("bt-settings-close")
 const btSettingsReset = document.getElementById("bt-settings-reset")
 const btSettingsSave = document.getElementById("bt-settings-save")
 const panelSettings = document.getElementById("panel-settings")
-const boxLengthLimitHistory = document.getElementById("input-box-length-limit-history")
 
 const history = []
 let indexHistoryCurrent = 0
 
 const MAP_SETTINGS_ELEMENTS = {
     inputKey: document.getElementById("input-key"),
-    inputLimitHistory: document.getElementById("input-limit-history"),
-    inputLengthLimitHistory: document.getElementById("input-length-limit-history"),
     tokens: document.getElementById("input-parameter-tokens"),
     temperature: document.getElementById("input-parameter-temperature")
 }
 
 const MAP_SETTINGS = {
     apiKey: null,
-    history: {
-        isLimit: false,
-        limit: 0,
-    },
     parameters: {
         tokens: 2048,
         temperature: 0.5
@@ -113,16 +106,6 @@ const writeTextQuestion = (text = "") => {
     inputQuestion.value = text
 }
 
-const disableInputQuestion = () => {
-    inputQuestion.disabled = true
-}
-
-const enableInputQuestion = () => {
-    inputQuestion.value = ""
-    inputQuestion.disabled = false
-    inputQuestion.focus()
-}
-
 const getLocalStorageSettings = (key = "") => {
     try {
         const response = JSON.parse(localStorage.getItem(key))
@@ -157,19 +140,9 @@ const saveLocalStorageSettings = ({ key = "", value = {} }) => {
     }
 }
 
-const clearHistory = () => {
-    if (MAP_SETTINGS.history.isLimit) {
-        while (document.querySelectorAll(".block-question").length > MAP_SETTINGS.history.limit) {
-            document.querySelectorAll(".block-question")[0].remove()
-        }
-    }
-}
-
 async function sendQuestion() {
     const divMain = createBlockQuestion()
     const question = inputQuestion.value
-
-    clearHistory()
 
     const elQuestion = writeQuestion(question)
 
@@ -177,18 +150,16 @@ async function sendQuestion() {
 
     writeTextQuestion("Loading...")
 
-    disableInputQuestion()
-
     const elAnswer = writeAnswer(`Answering...`)
 
     addElement(divMain, elAnswer)
 
     chatContent.scrollTop = chatContent.scrollHeight
 
+    inputQuestion.value = ""
+
     if (!MAP_SETTINGS.apiKey) {
         elAnswer.childNodes[1].innerHTML = `ERROR: API Key not provided`
-
-        enableInputQuestion()
 
         chatContent.scrollTop = chatContent.scrollHeight
         return
@@ -204,8 +175,6 @@ async function sendQuestion() {
 
     elAnswer.childNodes[1].innerHTML = `${response.error ? `ERROR: ` : ``}${responseAnswer.replace(/\n/g, "<br />")}`
 
-    enableInputQuestion()
-
     chatContent.scrollTop = chatContent.scrollHeight
 }
 
@@ -216,12 +185,9 @@ const toggleSettings = (value) => {
 
 const openSettings = () => {
     MAP_SETTINGS_ELEMENTS.inputKey.value = MAP_SETTINGS.apiKey
-    MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked = MAP_SETTINGS.history.isLimit
-    MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = MAP_SETTINGS.history.limit
     MAP_SETTINGS_ELEMENTS.tokens.value = MAP_SETTINGS.parameters.tokens
     MAP_SETTINGS_ELEMENTS.temperature.value = MAP_SETTINGS.parameters.temperature
 
-    toggleSettingLimitHistory(MAP_SETTINGS.history.isLimit)
     toggleSettings(true)
 }
 
@@ -231,18 +197,12 @@ const closeSettings = () => {
 
 const saveSettings = () => {
     MAP_SETTINGS.apiKey = MAP_SETTINGS_ELEMENTS.inputKey.value
-    MAP_SETTINGS.history.isLimit = MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked
-    MAP_SETTINGS.history.limit = MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked ? Number(MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value) : 0
     MAP_SETTINGS.parameters.tokens = Number(MAP_SETTINGS_ELEMENTS.tokens.value)
     MAP_SETTINGS.parameters.temperature = Number(MAP_SETTINGS_ELEMENTS.temperature.value)
 
     saveLocalStorageSettings({key: "settings.key", value: MAP_SETTINGS.apiKey})
-    saveLocalStorageSettings({key: "settings.history.isLimit", value: MAP_SETTINGS.history.isLimit})
-    saveLocalStorageSettings({key: "settings.history.limit", value: MAP_SETTINGS.history.limit})
     saveLocalStorageSettings({key: "settings.parameters.tokens", value: MAP_SETTINGS.parameters.tokens})
     saveLocalStorageSettings({key: "settings.parameters.temperature", value: MAP_SETTINGS.parameters.temperature})
-
-    clearHistory()
 
     closeSettings()
 }
@@ -251,34 +211,18 @@ const resetSettings = () => {
     removeLocalStorageSettings({clear: true})
 
     MAP_SETTINGS.apiKey = null
-    MAP_SETTINGS.history.isLimit = false
-    MAP_SETTINGS.history.limit = 0
     MAP_SETTINGS.parameters.tokens = 2048
     MAP_SETTINGS.parameters.temperature = 0.5
 
     MAP_SETTINGS_ELEMENTS.inputKey.value = null
-    MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked = false
-    MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = 0
     MAP_SETTINGS_ELEMENTS.tokens.value = 2048
     MAP_SETTINGS_ELEMENTS.temperature.value = 0.5
-
-    toggleSettingLimitHistory(false)
-}
-
-const toggleSettingLimitHistory = (value) => {
-    boxLengthLimitHistory.classList.toggle("active", value)
-
-    if (value) {
-        MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = MAP_SETTINGS.history.limit || 1
-    }
 }
 
 window.onload = () => {
     MAP_SETTINGS.apiKey = getLocalStorageSettings("settings.key") || null
-    MAP_SETTINGS.history.isLimit = getLocalStorageSettings("settings.history.isLimit") || false
-    MAP_SETTINGS.history.limit = getLocalStorageSettings("settings.history.limit") || 0
     MAP_SETTINGS.parameters.tokens = getLocalStorageSettings("settings.parameters.tokens") || 2048
-    MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.limit") || 0.5
+    MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.temperature") || 0.5
 
     inputQuestion.addEventListener("keypress", (e) => {
         if (inputQuestion.value && e.key === "Enter") {return sendQuestion()}
@@ -311,14 +255,7 @@ window.onload = () => {
         saveSettings()
     })
 
-    MAP_SETTINGS_ELEMENTS.inputLimitHistory.addEventListener("change", ({target: {checked}}) => {
-        toggleSettingLimitHistory(checked)
-    })
-
     btClearHistory.addEventListener("click", () => {
-        history.splice(0, history.length)
-        indexHistoryCurrent = 0
-
         document.querySelectorAll(".block-question").forEach(item => {
             item.remove()
         })
