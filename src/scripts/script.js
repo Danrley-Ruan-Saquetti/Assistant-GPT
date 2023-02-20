@@ -1,8 +1,14 @@
 const inputQuestion = document.getElementById("input-question")
 const chatContent = document.querySelector(".panel-chat")
+const panel = document.getElementById("panel")
 const chat = document.getElementById("chat")
+const btSettingsOpen = document.getElementById("bt-settings-open")
+const btSettingsClose = document.getElementById("bt-settings-close")
+const btSettingsReset = document.getElementById("bt-settings-reset")
+const btSettingsSave = document.getElementById("bt-settings-save")
+const panelSettings = document.getElementById("panel-settings")
 
-const OPEN_AI_API_KEY = ""
+const OPEN_AI_API_KEY = "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"
 
 const requestApi = async(body = "") => {
     const response = await fetch("https://api.openai.com/v1/completions", {
@@ -19,7 +25,7 @@ const requestApi = async(body = "") => {
             temperature: 0.5,
         }),
     }).then(res => res.json()).then(res => {
-        if (res.error) { return { error } }
+        if (res.error) { return { error: res.error } }
 
         if (res.choices) { return { result: { message: res.choices[0].text || "No reply" } } }
     })
@@ -81,6 +87,31 @@ const enableInputQuestion = () => {
     inputQuestion.focus()
 }
 
+const getLocalStorageSettings = (key = "") => {
+    try {
+        return JSON.parse(localStorage.getItem(key))
+    } catch (err) {
+        return null
+    }
+}
+
+const removeLocalStorageSettings = (key = "", clear = false) => {
+    try {
+        !clear ? localStorage.removeItem(key) : localStorage.clear()
+        localStorage.setItem(key, JSON.stringify(value))
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const saveLocalStorageSettings = (key = "", value = {}) => {
+    try {
+        localStorage.setItem(key, JSON.stringify(value))
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 async function sendQuestion() {
     const divMain = document.createElement("div")
     const question = inputQuestion.value
@@ -118,8 +149,29 @@ async function sendQuestion() {
     chatContent.scrollTop = chatContent.scrollHeight
 }
 
+const toggleSettings = (value) => {
+    panelSettings.classList.toggle("active", value)
+    panel.classList.toggle("focus-out", value)
+}
+
 window.onload = () => {
     inputQuestion.addEventListener("keypress", (e) => {
-        if (inputQuestion.value && e.key === "Enter") sendQuestion()
+        if (inputQuestion.value && e.key === "Enter") {sendQuestion()}
+    })
+
+    btSettingsOpen.addEventListener("click", () => {
+        toggleSettings(true)
+    })
+
+    btSettingsClose.addEventListener("click", () => {
+        toggleSettings(false)
+    })
+
+    btSettingsReset.addEventListener("click", () => {
+        
+    })
+
+    btSettingsSave.addEventListener("click", () => {
+        toggleSettings(false)
     })
 }

@@ -5,19 +5,16 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-input {
+input,
+button {
     border: none;
     outline: none;
-    padding: 8px;
     background: transparent;
-    width: 100%;
-    height: 100%;
     color: white;
 }
 
 body {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 12px;
@@ -29,54 +26,180 @@ body {
     color: white;
 }
 
-.session {
+.bt {
+    &.input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        width: 50px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: .3s;
+        &.primary {
+            background-color: #178617;
+            &:hover {
+                background-color: #105a10;
+            }
+            &:active {
+                background-color: #1faa1f;
+            }
+        }
+        &.secondary {
+            background-color: #194699;
+            &:hover {
+                background-color: #12316b;
+            }
+            &:active {
+                background-color: #245dc7;
+            }
+        }
+        &.tertiary {
+            background-color: #8d1919;
+            &:hover {
+                background-color: #631111;
+            }
+            &:active {
+                background-color: #b92222;
+            }
+        }
+    }
+    &.icon {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 35px;
+        height: 35px;
+        img {
+            width: 100%;
+            cursor: pointer;
+        }
+    }
+}
+
+.panel-settings {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 8px;
+    width: 80%;
+    height: 80%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .5);
     background-color: #3c3d46;
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-    &.panel-chat {
+    &.active {
+        display: flex;
+    }
+    .header-settings {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        font-size: 20px;
+        margin: 0 0 8px 8px;
+    }
+    .settings {
         position: relative;
         height: 100%;
         overflow-x: hidden;
         overflow-y: auto;
+        padding-block: 8px;
+        border-top: 1px solid #77798a;
+        border-bottom: 1px solid #77798a;
         .list {
-            position: absolute;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            min-height: 100%;
-            padding: 12px;
-            text-align: justify;
-            .block-question {
-                position: relative;
+            gap: 8px;
+            .input-box {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                input {
+                    padding: 4px 6px;
+                    background-color: #1d1e23;
+                    border-radius: 4px;
+                    font-size: 12px;
+                }
+                label {
+                    margin-left: 4px;
+                }
+            }
+        }
+    }
+    .actions {
+        display: flex;
+        justify-content: end;
+        gap: 8px;
+        padding: 8px 8px 0 0;
+    }
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    width: 80%;
+    &.focus-out {
+        opacity: .8;
+    }
+    .session {
+        width: 100%;
+        background-color: #3c3d46;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+        &.input-question-box {
+            input {
+                padding: 8px;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        &.panel-chat {
+            position: relative;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            .list {
+                position: absolute;
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
-                margin-bottom: 8px;
-                &::after {
-                    position: absolute;
-                    content: '';
-                    left: 0;
-                    width: 100%;
-                    height: 1px;
-                    border: 10px;
-                    bottom: -10px;
-                    background-color: #676979;
-                }
-                .post {
+                width: 100%;
+                min-height: 100%;
+                padding: 12px;
+                text-align: justify;
+                .block-question {
+                    position: relative;
                     display: flex;
                     flex-direction: column;
-                    gap: 2px;
-                    .message {
-                        width: fit-content;
-                        width: -moz-fit-content;
-                        padding: 12px;
-                        border-radius: 4px;
-                        background-color: #1d1e23;
-                    }
-                    &.question {
+                    gap: 12px;
+                    margin-bottom: 8px;
+                    &::after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
                         width: 100%;
-                        align-items: flex-end;
+                        height: 1px;
+                        border: 10px;
+                        bottom: -10px;
+                        background-color: #676979;
+                    }
+                    .post {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2px;
+                        .message {
+                            width: fit-content;
+                            width: -moz-fit-content;
+                            padding: 12px;
+                            border-radius: 4px;
+                            background-color: #1d1e23;
+                        }
+                        &.question {
+                            width: 100%;
+                            align-items: flex-end;
+                        }
                     }
                 }
             }

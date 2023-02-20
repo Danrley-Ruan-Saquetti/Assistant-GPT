@@ -5,19 +5,16 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-input {
+input,
+button {
   border: none;
   outline: none;
-  padding: 8px;
   background: transparent;
-  width: 100%;
-  height: 100%;
   color: white;
 }
 
 body {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
@@ -29,18 +26,140 @@ body {
   color: white;
 }
 
-.session {
-  background-color: #3c3d46;
+.bt.input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 50px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+.bt.input.primary {
+  background-color: #178617;
+}
+.bt.input.primary:hover {
+  background-color: #105a10;
+}
+.bt.input.primary:active {
+  background-color: #1faa1f;
+}
+.bt.input.secondary {
+  background-color: #194699;
+}
+.bt.input.secondary:hover {
+  background-color: #12316b;
+}
+.bt.input.secondary:active {
+  background-color: #245dc7;
+}
+.bt.input.tertiary {
+  background-color: #8d1919;
+}
+.bt.input.tertiary:hover {
+  background-color: #631111;
+}
+.bt.input.tertiary:active {
+  background-color: #b92222;
+}
+.bt.icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 35px;
+  height: 35px;
+}
+.bt.icon img {
   width: 100%;
+  cursor: pointer;
+}
+
+.panel-settings {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px;
+  width: 80%;
+  height: 80%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  background-color: #3c3d46;
+}
+.panel-settings.active {
+  display: flex;
+}
+.panel-settings .header-settings {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 20px;
+  margin: 0 0 8px 8px;
+}
+.panel-settings .settings {
+  position: relative;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-block: 8px;
+  border-top: 1px solid #77798a;
+  border-bottom: 1px solid #77798a;
+}
+.panel-settings .settings .list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.panel-settings .settings .list .input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.panel-settings .settings .list .input-box input {
+  padding: 4px 6px;
+  background-color: #1d1e23;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.panel-settings .settings .list .input-box label {
+  margin-left: 4px;
+}
+.panel-settings .actions {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  padding: 8px 8px 0 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  width: 80%;
+}
+.panel.focus-out {
+  opacity: 0.8;
+}
+.panel .session {
+  width: 100%;
+  background-color: #3c3d46;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-.session.panel-chat {
+.panel .session.input-question-box input {
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+}
+.panel .session.panel-chat {
   position: relative;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 }
-.session.panel-chat .list {
+.panel .session.panel-chat .list {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -50,14 +169,14 @@ body {
   padding: 12px;
   text-align: justify;
 }
-.session.panel-chat .list .block-question {
+.panel .session.panel-chat .list .block-question {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 8px;
 }
-.session.panel-chat .list .block-question::after {
+.panel .session.panel-chat .list .block-question::after {
   position: absolute;
   content: "";
   left: 0;
@@ -67,19 +186,19 @@ body {
   bottom: -10px;
   background-color: #676979;
 }
-.session.panel-chat .list .block-question .post {
+.panel .session.panel-chat .list .block-question .post {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-.session.panel-chat .list .block-question .post .message {
+.panel .session.panel-chat .list .block-question .post .message {
   width: fit-content;
   width: -moz-fit-content;
   padding: 12px;
   border-radius: 4px;
   background-color: #1d1e23;
 }
-.session.panel-chat .list .block-question .post.question {
+.panel .session.panel-chat .list .block-question .post.question {
   width: 100%;
   align-items: flex-end;
 }

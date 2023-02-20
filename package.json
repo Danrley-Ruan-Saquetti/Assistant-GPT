@@ -6,7 +6,7 @@
     "type": "commonjs",
     "scripts": {
         "dev": "electron .",
-        "build": "npx electron-packager . --icon icon-openai.icns --out=packages"
+        "build": "npx electron-packager . --icon icon-open-ai.icns --out=packages"
     },
     "keywords": [],
     "author": "",

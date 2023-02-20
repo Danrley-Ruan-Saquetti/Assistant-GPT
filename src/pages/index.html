@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="../icons/icon-open-ai.svg" />
+    <title>Chat GPT</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+
+<body>
+    <main class="panel" id="panel">
+        <button id="bt-settings-open" class="bt icon"><img src="../icons/settings.png" alt="Open Settings"></button>
+
+        <div class="session input-question-box">
+            <input type="text" name="question" id="input-question" class="input-question" placeholder="Ask a question">
+        </div>
+
+        <div class="session panel-chat">
+            <div class="list" id="chat"></div>
+        </div>
+    </main>
+
+    <div class="panel-settings" id="panel-settings">
+        <div class="header-settings">
+            <span>Settings</span>
+        </div>
+        <div class="settings">
+            <div class="list">
+                <div class="input-box">
+                    <label for="input-key">Inform a KEY</label>
+                    <input type="text" name="input-key" id="input-key">
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="bt input tertiary" id="bt-settings-reset">Reset</button>
+            <button class="bt input secondary" id="bt-settings-close">Close</button>
+            <button class="bt input primary" id="bt-settings-save">Save</button>
+        </div>
+    </div>
+
+    <script src="../scripts/script.js" type="module"></script>
+</body>
+
+</html>

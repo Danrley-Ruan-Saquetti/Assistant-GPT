@@ -11,7 +11,7 @@ function createWindow() {
 
     // win.setMenu(null)
 
-    win.loadFile("src/pages/page.html")
+    win.loadFile("src/pages/index.html")
 
     return win
 }
