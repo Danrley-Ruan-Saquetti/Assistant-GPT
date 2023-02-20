@@ -10,6 +10,9 @@ const btSettingsSave = document.getElementById("bt-settings-save")
 const panelSettings = document.getElementById("panel-settings")
 const boxLengthLimitHistory = document.getElementById("input-box-length-limit-history")
 
+const history = []
+let indexHistoryCurrent = 0
+
 const MAP_SETTINGS_ELEMENTS = {
     inputKey: document.getElementById("input-key"),
     inputLimitHistory: document.getElementById("input-limit-history"),
@@ -54,6 +57,9 @@ const requestApi = async(body = "") => {
 }
 
 const writeQuestion = (question = "") => {
+    history.push(question)
+    indexHistoryCurrent = history.length
+
     const post = document.createElement("div")
     const author = document.createElement("span")
     const message = document.createElement("p")
@@ -122,7 +128,6 @@ const getLocalStorageSettings = (key = "") => {
         const response = JSON.parse(localStorage.getItem(key))
         return response ? response.value : null
     } catch (err) {
-        console.log(err)
         const divMain = createBlockQuestion()
         const answer = writeAnswer("Cannot load settings")
 
@@ -275,10 +280,19 @@ window.onload = () => {
     MAP_SETTINGS.parameters.tokens = getLocalStorageSettings("settings.parameters.tokens") || 2048
     MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.limit") || 0.5
 
-    console.log(MAP_SETTINGS)
-
     inputQuestion.addEventListener("keypress", (e) => {
-        if (inputQuestion.value && e.key === "Enter") {sendQuestion()}
+        if (inputQuestion.value && e.key === "Enter") {return sendQuestion()}
+    })
+
+    inputQuestion.addEventListener("keydown", (e) => {
+        if (history.length > 0 && indexHistoryCurrent > 0 && e.key == "ArrowUp") {
+            indexHistoryCurrent--
+            writeTextQuestion(history[indexHistoryCurrent])
+        }
+        if (history.length > 0 && indexHistoryCurrent < history.length && e.key == "ArrowDown") {
+            indexHistoryCurrent++
+            writeTextQuestion(history[indexHistoryCurrent])
+        }
     })
 
     btSettingsOpen.addEventListener("click", () => {
@@ -302,6 +316,9 @@ window.onload = () => {
     })
 
     btClearHistory.addEventListener("click", () => {
+        history.splice(0, history.length)
+        indexHistoryCurrent = 0
+
         document.querySelectorAll(".block-question").forEach(item => {
             item.remove()
         })
