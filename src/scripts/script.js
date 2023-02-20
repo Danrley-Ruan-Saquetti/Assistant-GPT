@@ -24,8 +24,6 @@ const MAP_SETTINGS = {
     }
 }
 
-const API_KEY = "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"
-
 const requestApi = async(body = "") => {
     const response = await fetch("https://api.openai.com/v1/completions", {
         method: "POST",
