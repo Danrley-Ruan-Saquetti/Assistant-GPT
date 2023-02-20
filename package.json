@@ -1,0 +1,18 @@
+{
+    "name": "chat-gpt",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./src/app.js",
+    "type": "commonjs",
+    "scripts": {
+        "dev": "electron .",
+        "build": "npx electron-packager . --icon icon-openai.icns --out=packages"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^18.14.0",
+        "electron": "^23.1.0"
+    }
+}
