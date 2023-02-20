@@ -77,17 +77,6 @@ body {
 .bt.input.tertiary:active {
   background-color: #b92222;
 }
-.bt.icon {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 30px;
-  height: 30px;
-}
-.bt.icon img {
-  width: 100%;
-  cursor: pointer;
-}
 
 .panel-settings {
   position: absolute;
@@ -165,6 +154,22 @@ body {
 }
 .panel.focus-out {
   opacity: 0.8;
+}
+.panel .actions-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+}
+.panel .actions-menu .bt.icon {
+  width: 100%;
+}
+.panel .actions-menu .bt.icon img {
+  width: 100%;
+  cursor: pointer;
 }
 .panel .session {
   width: 100%;

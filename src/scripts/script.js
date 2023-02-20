@@ -2,6 +2,7 @@ const inputQuestion = document.getElementById("input-question")
 const chatContent = document.querySelector(".panel-chat")
 const panel = document.getElementById("panel")
 const chat = document.getElementById("chat")
+const btClearHistory = document.getElementById("bt-clear-history")
 const btSettingsOpen = document.getElementById("bt-settings-open")
 const btSettingsClose = document.getElementById("bt-settings-close")
 const btSettingsReset = document.getElementById("bt-settings-reset")
@@ -23,7 +24,7 @@ const MAP_SETTINGS = {
     }
 }
 
-const API_KEY = "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"
+const API_KEY = "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"
 
 const requestApi = async(body = "") => {
     const response = await fetch("https://api.openai.com/v1/completions", {
@@ -207,6 +208,9 @@ const resetSettings = () => {
     MAP_SETTINGS.history.limit = 0
 
     MAP_SETTINGS_ELEMENTS.inputKey.value = null
+    MAP_SETTINGS_ELEMENTS.inputLimitHistory.checked = false
+    MAP_SETTINGS_ELEMENTS.inputLengthLimitHistory.value = 0
+    toggleSettingLimitHistory(false)
 }
 
 const toggleSettingLimitHistory = (value) => {
@@ -244,5 +248,11 @@ window.onload = () => {
 
     MAP_SETTINGS_ELEMENTS.inputLimitHistory.addEventListener("change", ({target: {checked}}) => {
         toggleSettingLimitHistory(checked)
+    })
+
+    btClearHistory.addEventListener("click", () => {
+        document.querySelectorAll(".block-question").forEach(item => {
+            item.remove()
+        })
     })
 }

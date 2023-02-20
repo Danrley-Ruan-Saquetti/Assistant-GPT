@@ -5,14 +5,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="../icons/icon-open-ai.svg" />
+    <link rel="icon" type="image/svg+xml" href="../icons/icon-open-ai.png" />
     <title>Chat GPT</title>
     <link rel="stylesheet" href="../styles/style.css">
 </head>
 
 <body>
     <main class="panel" id="panel">
-        <button id="bt-settings-open" class="bt icon"><img src="../icons/settings.png" alt="Open Settings"></button>
+        <div class="actions-menu">
+            <button id="bt-settings-open" class="bt icon"><img src="../icons/settings.png" alt="Open Settings"></button>
+            <button id="bt-clear-history" class="bt icon"><img src="../icons/clear.png" alt="Clear History"></button>
+        </div>
 
         <div class="session input-question-box">
             <input type="text" name="question" id="input-question" class="input-question" placeholder="Ask a question">

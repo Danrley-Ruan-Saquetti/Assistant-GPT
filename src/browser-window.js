@@ -9,7 +9,7 @@ function createWindow() {
         darkTheme: true
     })
 
-    // win.setMenu(null)
+    win.setMenu(null)
 
     win.loadFile("src/pages/index.html")
 
