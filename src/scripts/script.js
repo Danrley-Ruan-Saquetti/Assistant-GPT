@@ -26,6 +26,45 @@ const MAP_SETTINGS = {
     }
 }
 
+async function sendQuestion() {
+    const divMain = createBlockQuestion()
+    const question = inputQuestion.value
+
+    const elQuestion = writeQuestion(question)
+
+    addElement(divMain, elQuestion)
+
+    writeTextQuestion("Loading...")
+
+    const elAnswer = writeAnswer(`Answering...`)
+
+    addElement(divMain, elAnswer)
+
+    chatContent.scrollTop = chatContent.scrollHeight
+
+    inputQuestion.value = ""
+
+    if (!MAP_SETTINGS.apiKey) {
+        elAnswer.childNodes[1].innerHTML = `ERROR: API Key not provided`
+
+        chatContent.scrollTop = chatContent.scrollHeight
+        return
+    }
+
+    const response = await requestApi(question)
+
+    let responseAnswer = response.error ? response.error.message : response.result.message
+
+    while (responseAnswer.startsWith("\n")) {
+        responseAnswer = responseAnswer.substring(2)
+    }
+
+    elAnswer.childNodes[1].innerHTML = `${response.error ? `ERROR: ` : ``}${responseAnswer.replace(/\n/g, "<br />")}`
+
+    chatContent.scrollTop = chatContent.scrollHeight
+}
+
+// Api
 const requestApi = async(body = "") => {
     const response = await fetch("https://api.openai.com/v1/completions", {
         method: "POST",
@@ -49,6 +88,7 @@ const requestApi = async(body = "") => {
     return response
 }
 
+// DOM
 const writeQuestion = (question = "") => {
     history.push(question)
     indexHistoryCurrent = history.length
@@ -106,6 +146,18 @@ const writeTextQuestion = (text = "") => {
     inputQuestion.value = text
 }
 
+const toggleSettings = (value) => {
+    panelSettings.classList.toggle("active", value)
+    panel.classList.toggle("focus-out", value)
+}
+
+const clearPanel = () => {
+    document.querySelectorAll(".block-question").forEach(item => {
+        item.remove()
+    })
+}
+
+// Local Storage
 const getLocalStorageSettings = (key = "") => {
     try {
         const response = JSON.parse(localStorage.getItem(key))
@@ -140,49 +192,7 @@ const saveLocalStorageSettings = ({ key = "", value = {} }) => {
     }
 }
 
-async function sendQuestion() {
-    const divMain = createBlockQuestion()
-    const question = inputQuestion.value
-
-    const elQuestion = writeQuestion(question)
-
-    addElement(divMain, elQuestion)
-
-    writeTextQuestion("Loading...")
-
-    const elAnswer = writeAnswer(`Answering...`)
-
-    addElement(divMain, elAnswer)
-
-    chatContent.scrollTop = chatContent.scrollHeight
-
-    inputQuestion.value = ""
-
-    if (!MAP_SETTINGS.apiKey) {
-        elAnswer.childNodes[1].innerHTML = `ERROR: API Key not provided`
-
-        chatContent.scrollTop = chatContent.scrollHeight
-        return
-    }
-
-    const response = await requestApi(question)
-
-    let responseAnswer = response.error ? response.error.message : response.result.message
-
-    while (responseAnswer.startsWith("\n")) {
-        responseAnswer = responseAnswer.substring(2)
-    }
-
-    elAnswer.childNodes[1].innerHTML = `${response.error ? `ERROR: ` : ``}${responseAnswer.replace(/\n/g, "<br />")}`
-
-    chatContent.scrollTop = chatContent.scrollHeight
-}
-
-const toggleSettings = (value) => {
-    panelSettings.classList.toggle("active", value)
-    panel.classList.toggle("focus-out", value)
-}
-
+// Settings
 const openSettings = () => {
     MAP_SETTINGS_ELEMENTS.inputKey.value = MAP_SETTINGS.apiKey
     MAP_SETTINGS_ELEMENTS.tokens.value = MAP_SETTINGS.parameters.tokens
@@ -219,45 +229,32 @@ const resetSettings = () => {
     MAP_SETTINGS_ELEMENTS.temperature.value = 0.5
 }
 
+// Events
+const keypress = ({key}) => {
+    if (inputQuestion.value && key === "Enter") {return sendQuestion()}
+}
+
+const keydown = ({key}) => {
+    if (history.length > 0 && indexHistoryCurrent > 0 && key == "ArrowUp") {
+        indexHistoryCurrent--
+        writeTextQuestion(history[indexHistoryCurrent])
+    }
+    if (history.length > 0 && indexHistoryCurrent < history.length && key == "ArrowDown") {
+        indexHistoryCurrent++
+        writeTextQuestion(history[indexHistoryCurrent])
+    }
+}
+
 window.onload = () => {
     MAP_SETTINGS.apiKey = getLocalStorageSettings("settings.key") || null
     MAP_SETTINGS.parameters.tokens = getLocalStorageSettings("settings.parameters.tokens") || 2048
     MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.temperature") || 0.5
 
-    inputQuestion.addEventListener("keypress", (e) => {
-        if (inputQuestion.value && e.key === "Enter") {return sendQuestion()}
-    })
-
-    inputQuestion.addEventListener("keydown", (e) => {
-        if (history.length > 0 && indexHistoryCurrent > 0 && e.key == "ArrowUp") {
-            indexHistoryCurrent--
-            writeTextQuestion(history[indexHistoryCurrent])
-        }
-        if (history.length > 0 && indexHistoryCurrent < history.length && e.key == "ArrowDown") {
-            indexHistoryCurrent++
-            writeTextQuestion(history[indexHistoryCurrent])
-        }
-    })
-
-    btSettingsOpen.addEventListener("click", () => {
-        openSettings()
-    })
-
-    btSettingsClose.addEventListener("click", () => {
-        closeSettings()
-    })
-
-    btSettingsReset.addEventListener("click", () => {
-        resetSettings()
-    })
-
-    btSettingsSave.addEventListener("click", () => {
-        saveSettings()
-    })
-
-    btClearHistory.addEventListener("click", () => {
-        document.querySelectorAll(".block-question").forEach(item => {
-            item.remove()
-        })
-    })
+    inputQuestion.addEventListener("keypress", keypress)
+    inputQuestion.addEventListener("keydown", keydown)
+    btSettingsOpen.addEventListener("click", openSettings)
+    btSettingsClose.addEventListener("click", closeSettings)
+    btSettingsReset.addEventListener("click", resetSettings)
+    btSettingsSave.addEventListener("click", saveSettings)
+    btClearHistory.addEventListener("click", clearPanel)
 }
