@@ -2,10 +2,9 @@ const { BrowserWindow } = require('electron')
 
 function createWindow() {
     const win = new BrowserWindow({
-        width: 450,
-        height: 500,
+        width: 500,
+        height: 550,
         title: "Chat GPT",
-        resizable: false,
         darkTheme: true,
         icon: __dirname + "/icons/icon-open-ai.png"
     })
