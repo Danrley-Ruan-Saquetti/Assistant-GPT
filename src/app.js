@@ -27,6 +27,16 @@ const App = () => {
 
     app.setAppUserModelId(process.execPath)
 
+    app.on("browser-window-blur", () => {
+        isFocusOut = true
+
+        hiddenWin()
+
+        setTimeout(() => {
+            isFocusOut = false
+        }, 500)
+    })
+
     const contextMenu = Menu.buildFromTemplate([{
         label: 'Close',
         type: 'normal',
@@ -37,22 +47,15 @@ const App = () => {
 
     tray.setContextMenu(contextMenu)
 
-    tray.addListener("click", () => {
-        if (isFocusOut) {
-            isFocusOut = false
-            return
-        }
+    tray.on("click", () => {
+        if (isFocusOut) { return }
 
         toggleWin()
     })
 
+    tray.on("double-click", showWin)
+
     win.on('minimize', hiddenWin)
-
-    app.on("browser-window-blur", () => {
-        isFocusOut = true
-
-        hiddenWin()
-    })
 }
 
 app.on('window-all-closed', () => {
