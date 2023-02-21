@@ -1,4 +1,5 @@
 const { BrowserWindow } = require('electron')
+const { resolve } = require("path")
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -10,6 +11,8 @@ function createWindow() {
     })
 
     win.setMenu(null)
+
+    win.setIcon(resolve(__dirname, "icons", "icon-open-ai.png"))
 
     win.loadFile("src/pages/index.html")
 

@@ -3,6 +3,8 @@ const { app } = require('electron')
 const App = () => {
     const win = require("./browser-window.js")
     const tray = require("./tray.js")
+
+    app.setAppUserModelId(process.execPath)
 }
 
 app.on('window-all-closed', () => {
