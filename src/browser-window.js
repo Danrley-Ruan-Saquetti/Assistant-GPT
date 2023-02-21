@@ -15,7 +15,10 @@ function createWindow() {
         title: "Chat GPT",
         darkTheme: true,
         icon: __dirname + "/icons/icon-open-ai.png",
+        show: false,
     })
+
+    win.hide()
 
     win.setPosition(width - boundsInitial.width + 5, height - boundsInitial.height - 35)
 

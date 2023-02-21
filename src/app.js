@@ -1,8 +1,29 @@
 const { app, Menu } = require('electron')
 
 const App = () => {
+    let isVisible = false
+    let isFocusOut = false
+
     const win = require("./browser-window.js")
     const tray = require("./tray.js")
+
+    const toggleWin = () => {
+        if (!isVisible) {
+            showWin()
+        } else {
+            hiddenWin()
+        }
+    }
+
+    const showWin = () => {
+        isVisible = true
+        win.show()
+    }
+
+    const hiddenWin = () => {
+        isVisible = false
+        win.hide()
+    }
 
     app.setAppUserModelId(process.execPath)
 
@@ -16,20 +37,21 @@ const App = () => {
 
     tray.setContextMenu(contextMenu)
 
-    tray.on("click", () => {
-        if (win.isVisible()) {
-            win.hide()
-        } else {
-            win.show()
+    tray.addListener("click", () => {
+        if (isFocusOut) {
+            isFocusOut = false
+            return
         }
+
+        toggleWin()
     })
 
-    win.on('minimize', () => {
-        win.hide()
-    })
+    win.on('minimize', hiddenWin)
 
-    app.on("browser-window-blur", (ev) => {
-        win.hide()
+    app.on("browser-window-blur", () => {
+        isFocusOut = true
+
+        hiddenWin()
     })
 }
 
