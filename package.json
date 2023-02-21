@@ -6,7 +6,7 @@
     "type": "commonjs",
     "scripts": {
         "dev": "electron .",
-        "build.windows": "npx electron-packager . \"Open AI - Chat GPT\" --out=packages --overwrite"
+        "build": "npx electron-packager . \"Open AI - Chat GPT\" --out=packages --overwrite"
     },
     "keywords": [],
     "author": "",
