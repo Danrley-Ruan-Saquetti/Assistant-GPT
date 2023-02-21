@@ -28,9 +28,7 @@ const App = () => {
         win.hide()
     })
 
-    win.on('close', (ev) => {
-        ev.preventDefault()
-
+    app.on("browser-window-blur", (ev) => {
         win.hide()
     })
 }
