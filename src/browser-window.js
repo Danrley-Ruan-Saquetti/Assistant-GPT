@@ -12,6 +12,8 @@ function createWindow() {
     const boundsInitial = { width: 395, height: 395 }
     const win = new BrowserWindow({
         ...boundsInitial,
+        minWidth: 250,
+        minHeight: 250,
         title: "Chat GPT",
         darkTheme: true,
         icon: __dirname + "/icons/icon-open-ai.png",

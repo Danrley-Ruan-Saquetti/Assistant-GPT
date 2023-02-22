@@ -38,6 +38,8 @@ const App = () => {
 
     tray.on("click", toggleWin)
 
+    tray.on("double-click", toggleWin)
+
     win.on('minimize', hiddenWin)
 }
 
