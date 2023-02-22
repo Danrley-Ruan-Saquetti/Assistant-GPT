@@ -16,4 +16,4 @@ Isso criará uma pasta ```packages``` e dentro dela estará o executável do apl
 
 Ao executá-lo, o app rodará em segundo plano, podendo ser visto nos itens ocultos, no canto direito da barra de tarefas. Ao clicar em cima do ícone, será aberto o chat para fazer qualquer tipo de pergunta.
 
-[Image](./src/imgs/amostra-app.png)
+[Image](https://github.com/Danrley-Ruan-Saquetti/Chat-GPT/blob/app-hidden/src/imgs/amostra-app.png)
