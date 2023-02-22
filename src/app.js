@@ -2,7 +2,6 @@ const { app, Menu } = require('electron')
 
 const App = () => {
     let isVisible = false
-    let isFocusOut = false
 
     const win = require("./browser-window.js")
     const tray = require("./tray.js")
@@ -27,16 +26,6 @@ const App = () => {
 
     app.setAppUserModelId(process.execPath)
 
-    app.on("browser-window-blur", () => {
-        isFocusOut = true
-
-        hiddenWin()
-
-        setTimeout(() => {
-            isFocusOut = false
-        }, 500)
-    })
-
     const contextMenu = Menu.buildFromTemplate([{
         label: 'Close',
         type: 'normal',
@@ -47,13 +36,7 @@ const App = () => {
 
     tray.setContextMenu(contextMenu)
 
-    tray.on("click", () => {
-        if (isFocusOut) { return }
-
-        toggleWin()
-    })
-
-    tray.on("double-click", showWin)
+    tray.on("click", toggleWin)
 
     win.on('minimize', hiddenWin)
 }
