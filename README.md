@@ -20,6 +20,6 @@ Ao executá-lo, o app rodará em segundo plano, podendo ser visto nos itens ocul
 
 ## Instruções
 
-Para usá-lo, é necessário entrar nas configurações e informar a API Key, disponível na própria plataforma oficial da OpenAI, além de outras configurações, como a quantidade máxima de caracteres e a taxa de criatividade de respostas, que varia entre 0 (zero) e 2 (dois).
+Para usá-lo, é necessário entrar nas configurações e informar a API Key, disponível na própria plataforma oficial da [OpenAI](https://platform.openai.com/), além de outras configurações, como a quantidade máxima de caracteres e a taxa de criatividade de respostas, que varia entre 0 (zero) e 2 (dois).
 
 ![Image](https://github.com/Danrley-Ruan-Saquetti/Chat-GPT/blob/app-hidden/src/imgs/amostra-setting-key.png)
