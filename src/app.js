@@ -1,6 +1,10 @@
-const { app, Menu } = require('electron')
+const { app, Menu, globalShortcut } = require('electron')
 
 const App = () => {
+    const closeApp = () => {
+        app.quit()
+    }
+
     let isVisible = false
 
     const win = require("./browser-window.js")
@@ -29,9 +33,7 @@ const App = () => {
     const contextMenu = Menu.buildFromTemplate([{
         label: 'Close',
         type: 'normal',
-        click: () => {
-            app.exit()
-        }
+        click: closeApp
     }, ])
 
     tray.setContextMenu(contextMenu)
@@ -40,10 +42,11 @@ const App = () => {
 
     tray.on("double-click", toggleWin)
 
-    win.on('minimize', hiddenWin)
+    globalShortcut.register("CommandOrControl+U", toggleWin)
 }
 
 app.on('window-all-closed', () => {
+    globalShortcut.unregisterAll()
     if (process.platform !== 'darwin') app.quit()
 })
 

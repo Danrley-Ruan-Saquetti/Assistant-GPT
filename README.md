@@ -23,3 +23,13 @@ Ao executá-lo, o app rodará em segundo plano, podendo ser visto nos itens ocul
 Para usá-lo, é necessário entrar nas configurações e informar a [API Key](https://platform.openai.com/account/api-keys), disponível na própria plataforma oficial da [OpenAI](https://platform.openai.com/), além de outras configurações, como a quantidade máxima de caracteres e a taxa de criatividade de respostas, que varia entre 0 (zero) e 2 (dois).
 
 ![Image](https://github.com/Danrley-Ruan-Saquetti/Chat-GPT/blob/app-hidden/src/imgs/amostra-setting-key.png)
+
+## Atalhos
+
+```
+Ctrl+U // Alterna entre minimizar e maximizar o chat
+Ctrl+S // Salvar configurações
+Ctrl+R // Limpar mensagens
+Ctrl+P // Abrir configurações
+Tab // Auto foco no campo da questão
+```
