@@ -1,15 +1,15 @@
 {
-    "name": "chat-gpt",
+    "name": "assistant-gpt",
     "version": "1.0.0",
     "description": "",
     "main": "./src/app.js",
     "type": "commonjs",
     "scripts": {
         "dev": "electron .",
-        "build": "npx electron-packager . \"Open AI - Chat GPT\" --out=packages --overwrite"
+        "build": "npx electron-packager . \"Assistant GPT\" --out=packages --overwrite"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": ["Assistant", "OpenAI", "Chat-GPT", "Electron"],
+    "author": "Dan Ruan",
     "license": "ISC",
     "devDependencies": {
         "@types/node": "^18.14.0",

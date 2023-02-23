@@ -89,6 +89,16 @@ const requestApi = async(body = "") => {
 }
 
 // DOM
+const createBlockQuestion = () => {
+    const divMain = document.createElement("div")
+
+    divMain.classList.add("block-question")
+
+    addElement(chat, divMain)
+
+    return divMain
+}
+
 const writeQuestion = (question = "") => {
     history.push(question)
     indexHistoryCurrent = history.length
@@ -110,7 +120,7 @@ const writeQuestion = (question = "") => {
     return post
 }
 
-const writeAnswer = (answer = "") => {
+const writeAnswer = (answer = "", authorA = null) => {
     const post = document.createElement("div")
     const author = document.createElement("span")
     const message = document.createElement("p")
@@ -119,23 +129,13 @@ const writeAnswer = (answer = "") => {
     author.classList.add("author")
     message.classList.add("message")
 
-    author.innerHTML = "Chat GPT"
+    author.innerHTML = authorA || "Assistant GPT"
     message.innerHTML = `${answer.replace(/\n/g, "<br />")}`
 
     post.appendChild(author)
     post.appendChild(message)
 
     return post
-}
-
-const createBlockQuestion = () => {
-    const divMain = document.createElement("div")
-
-    divMain.classList.add("block-question")
-
-    addElement(chat, divMain)
-
-    return divMain
 }
 
 const addElement = (parent, child) => {
@@ -164,7 +164,7 @@ const getLocalStorageSettings = (key = "") => {
         return response ? response.value : null
     } catch (err) {
         const divMain = createBlockQuestion()
-        const answer = writeAnswer("Cannot load settings")
+        const answer = writeAnswer("Cannot load settings", "System")
 
         addElement(divMain, answer)
     }
@@ -175,7 +175,7 @@ const removeLocalStorageSettings = ({ key = "", clear = false }) => {
         !clear ? localStorage.removeItem(key) : localStorage.clear()
     } catch (err) {
         const divMain = createBlockQuestion()
-        const answer = writeAnswer("Cannot remove settings")
+        const answer = writeAnswer("Cannot remove settings", "System")
 
         addElement(divMain, answer)
     }
@@ -186,7 +186,7 @@ const saveLocalStorageSettings = ({ key = "", value = {} }) => {
         localStorage.setItem(key, JSON.stringify({ value }))
     } catch (err) {
         const divMain = createBlockQuestion()
-        const answer = writeAnswer("Cannot save settings")
+        const answer = writeAnswer("Cannot save settings", "System")
 
         addElement(divMain, answer)
     }
@@ -214,6 +214,11 @@ const saveSettings = () => {
     saveLocalStorageSettings({key: "settings.parameters.tokens", value: MAP_SETTINGS.parameters.tokens})
     saveLocalStorageSettings({key: "settings.parameters.temperature", value: MAP_SETTINGS.parameters.temperature})
 
+    const divMain = createBlockQuestion()
+    const answerEl = writeAnswer("Settings saved", "System")
+
+    addElement(divMain, answerEl)
+
     closeSettings()
 }
 
@@ -227,19 +232,37 @@ const resetSettings = () => {
     MAP_SETTINGS_ELEMENTS.inputKey.value = null
     MAP_SETTINGS_ELEMENTS.tokens.value = 2048
     MAP_SETTINGS_ELEMENTS.temperature.value = 0.5
+
+    const divMain = createBlockQuestion()
+    const answerEl = writeAnswer("Settings reset", "System")
+
+    addElement(divMain, answerEl)
+
 }
 
 // Events
 const keypress = ({key}) => {
-    if (inputQuestion.value && key === "Enter") {return sendQuestion()}
+    if (inputQuestion.value && key === "Enter") {sendQuestion()}
 }
 
-const keydown = ({key}) => {
-    if (history.length > 0 && indexHistoryCurrent > 0 && key == "ArrowUp") {
+const keydown = ({ code, ctrlKey }) => {
+    if (code == "Tab" && !panelSettings.classList.contains("active")) {setTimeout(() => inputQuestion.focus(), 0)}
+
+    if (!ctrlKey) {return}
+
+    if (code == "KeyS" && panelSettings.classList.contains("active")) saveSettings()
+    
+    if (code == "KeyP") { panelSettings.classList.contains("active") ? closeSettings() : openSettings() }
+
+    if (code == "KeyR") clearPanel()
+}
+
+const writeHistory = ({key}) => {
+    if (key == "ArrowUp" && history.length > 0 && indexHistoryCurrent > 0) {
         indexHistoryCurrent--
         writeTextQuestion(history[indexHistoryCurrent])
     }
-    if (history.length > 0 && indexHistoryCurrent < history.length && key == "ArrowDown") {
+    if (key == "ArrowDown" && history.length > 0 && indexHistoryCurrent < history.length) {
         indexHistoryCurrent++
         writeTextQuestion(history[indexHistoryCurrent])
     }
@@ -250,8 +273,9 @@ window.onload = () => {
     MAP_SETTINGS.parameters.tokens = getLocalStorageSettings("settings.parameters.tokens") || 2048
     MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.temperature") || 0.5
 
+    addEventListener("keydown", keydown)
     inputQuestion.addEventListener("keypress", keypress)
-    inputQuestion.addEventListener("keydown", keydown)
+    inputQuestion.addEventListener("keydown", writeHistory)
     btSettingsOpen.addEventListener("click", openSettings)
     btSettingsClose.addEventListener("click", closeSettings)
     btSettingsReset.addEventListener("click", resetSettings)
