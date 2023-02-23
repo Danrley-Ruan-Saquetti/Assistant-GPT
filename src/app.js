@@ -8,6 +8,7 @@ const App = () => {
     let isVisible = false
 
     const win = require("./browser-window.js")
+    const tray = require("./tray.js")
 
     const toggleWin = () => {
         if (!isVisible) {

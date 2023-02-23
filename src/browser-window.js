@@ -22,7 +22,7 @@ function createWindow() {
         frame: false
     })
 
-    win.setPosition(width - boundsInitial.width + 5, height - boundsInitial.height - 35)
+    win.hide()
 
     win.setPosition(width - boundsInitial.width + 6, height - boundsInitial.height - 40)
 
