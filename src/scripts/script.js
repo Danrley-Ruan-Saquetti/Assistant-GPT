@@ -89,7 +89,6 @@ const requestApi = async(body = "") => {
 }
 
 // DOM
-
 const createBlockQuestion = () => {
     const divMain = document.createElement("div")
 
@@ -130,7 +129,7 @@ const writeAnswer = (answer = "", authorA = null) => {
     author.classList.add("author")
     message.classList.add("message")
 
-    author.innerHTML = authorA || "Chat GPT"
+    author.innerHTML = authorA || "Assistant GPT"
     message.innerHTML = `${answer.replace(/\n/g, "<br />")}`
 
     post.appendChild(author)
@@ -258,23 +257,25 @@ const keydown = ({ code, ctrlKey }) => {
     if (code == "KeyR") clearPanel()
 }
 
+const writeHistory = ({key}) => {
+    if (key == "ArrowUp" && history.length > 0 && indexHistoryCurrent > 0) {
+        indexHistoryCurrent--
+        writeTextQuestion(history[indexHistoryCurrent])
+    }
+    if (key == "ArrowDown" && history.length > 0 && indexHistoryCurrent < history.length) {
+        indexHistoryCurrent++
+        writeTextQuestion(history[indexHistoryCurrent])
+    }
+}
+
 window.onload = () => {
     MAP_SETTINGS.apiKey = getLocalStorageSettings("settings.key") || null
     MAP_SETTINGS.parameters.tokens = getLocalStorageSettings("settings.parameters.tokens") || 2048
     MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.temperature") || 0.5
 
-    inputQuestion.addEventListener("keypress", keypress)
-    inputQuestion.addEventListener("keydown", ({key}) => {
-        if (history.length > 0 && indexHistoryCurrent > 0 && key == "ArrowUp") {
-            indexHistoryCurrent--
-            writeTextQuestion(history[indexHistoryCurrent])
-        }
-        if (history.length > 0 && indexHistoryCurrent < history.length && key == "ArrowDown") {
-            indexHistoryCurrent++
-            writeTextQuestion(history[indexHistoryCurrent])
-        }
-    })
     addEventListener("keydown", keydown)
+    inputQuestion.addEventListener("keypress", keypress)
+    inputQuestion.addEventListener("keydown", writeHistory)
     btSettingsOpen.addEventListener("click", openSettings)
     btSettingsClose.addEventListener("click", closeSettings)
     btSettingsReset.addEventListener("click", resetSettings)
