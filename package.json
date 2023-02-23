@@ -8,11 +8,19 @@
         "dev": "electron .",
         "build": "npx electron-packager . \"Assistant GPT\" --out=packages --overwrite"
     },
-    "keywords": ["Assistant", "OpenAI", "Chat-GPT", "Electron"],
+    "keywords": [
+        "Assistant",
+        "OpenAI",
+        "Chat-GPT",
+        "Electron"
+    ],
     "author": "Dan Ruan",
     "license": "ISC",
     "devDependencies": {
         "@types/node": "^18.14.0",
         "electron": "^23.1.0"
+    },
+    "dependencies": {
+        "electron-browser-storage": "^1.0.7"
     }
 }

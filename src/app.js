@@ -1,14 +1,9 @@
 const { app, Menu, globalShortcut } = require('electron')
 
-const App = () => {
+const App = async() => {
     const closeApp = () => {
         app.quit()
     }
-
-    let isVisible = false
-
-    const win = require("./browser-window.js")
-    const tray = require("./tray.js")
 
     const toggleWin = () => {
         if (!isVisible) {
@@ -28,13 +23,19 @@ const App = () => {
         win.hide()
     }
 
-    app.setAppUserModelId(process.execPath)
-
     const contextMenu = Menu.buildFromTemplate([{
         label: 'Close',
         type: 'normal',
         click: closeApp
     }, ])
+
+    const win = require("./browser-window.js")
+    const tray = require("./tray.js")
+    const createNotification = require("./notification.js")
+
+    let isVisible = false
+
+    app.setAppUserModelId(process.execPath)
 
     tray.setContextMenu(contextMenu)
 
@@ -43,6 +44,12 @@ const App = () => {
     tray.on("double-click", toggleWin)
 
     globalShortcut.register("CommandOrControl+U", toggleWin)
+
+    const notificationStarted = createNotification({ title: "Assistant GPT", body: "The Assistant GPT has started!" })
+
+    notificationStarted.show()
+
+    notificationStarted.on("click", showWin)
 }
 
 app.on('window-all-closed', () => {
