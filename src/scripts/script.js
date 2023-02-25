@@ -15,7 +15,7 @@ let indexHistoryCurrent = 0
 const MAP_SETTINGS_ELEMENTS = {
     inputKey: document.getElementById("input-key"),
     tokens: document.getElementById("input-parameter-tokens"),
-    temperature: document.getElementById("input-parameter-temperature")
+    temperature: document.getElementById("input-parameter-temperature"),
 }
 
 const MAP_SETTINGS = {
@@ -23,7 +23,7 @@ const MAP_SETTINGS = {
     parameters: {
         tokens: 2048,
         temperature: 0.5
-    }
+    },
 }
 
 async function sendQuestion() {
@@ -202,6 +202,10 @@ const openSettings = () => {
 }
 
 const closeSettings = () => {
+    MAP_SETTINGS_ELEMENTS.inputKey.value = MAP_SETTINGS.apiKey
+    MAP_SETTINGS_ELEMENTS.tokens.value = MAP_SETTINGS.parameters.tokens
+    MAP_SETTINGS_ELEMENTS.temperature.value = MAP_SETTINGS.parameters.temperature
+
     toggleSettings(false)
 }
 
@@ -219,7 +223,7 @@ const saveSettings = () => {
 
     addElement(divMain, answerEl)
 
-    closeSettings()
+    toggleSettings(false)
 }
 
 const resetSettings = () => {
@@ -237,7 +241,6 @@ const resetSettings = () => {
     const answerEl = writeAnswer("Settings reset", "System")
 
     addElement(divMain, answerEl)
-
 }
 
 // Events
