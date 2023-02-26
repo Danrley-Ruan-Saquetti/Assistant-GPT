@@ -255,7 +255,7 @@ const keydown = ({ code, ctrlKey }) => {
 
     if (code == "KeyS" && panelSettings.classList.contains("active")) saveSettings()
     
-    if (code == "KeyP") { panelSettings.classList.contains("active") ? closeSettings() : openSettings() }
+    if (code == "KeyQ") { panelSettings.classList.contains("active") ? closeSettings() : openSettings() }
 
     if (code == "KeyR") clearPanel()
 }

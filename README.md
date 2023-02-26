@@ -27,9 +27,9 @@ Para usá-lo, é necessário entrar nas configurações e informar a [API Key](h
 ## Atalhos
 
 ```
-Ctrl+U // Abrir/fechar o assistente
+Ctrl+D // Abrir/fechar o assistente
 Ctrl+S // Salvar configurações
 Ctrl+R // Limpar mensagens
-Ctrl+P // Abrir/fechar configurações
+Ctrl+Q // Abrir/fechar configurações
 Tab // Auto foco no campo da questão
 ```

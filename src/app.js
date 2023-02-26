@@ -43,7 +43,7 @@ const App = async() => {
 
     tray.on("double-click", toggleWin)
 
-    globalShortcut.register("CommandOrControl+U", toggleWin)
+    globalShortcut.register("CommandOrControl+D", toggleWin)
 
     const notificationStarted = createNotification({ title: "Assistant GPT", body: "The Assistant GPT has started!" })
 
