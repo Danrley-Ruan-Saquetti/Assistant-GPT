@@ -27,7 +27,7 @@ Para usá-lo, é necessário entrar nas configurações e informar a [API Key](h
 ## Atalhos
 
 ```
-Ctrl+D // Abrir/fechar o assistente
+Alt+Q // Abrir/fechar o assistente
 Ctrl+S // Salvar configurações
 Ctrl+R // Limpar mensagens
 Ctrl+Q // Abrir/fechar configurações
