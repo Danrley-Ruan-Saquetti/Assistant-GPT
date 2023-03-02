@@ -32,4 +32,5 @@ Ctrl+S // Salvar configurações
 Ctrl+R // Limpar mensagens
 Ctrl+Q // Abrir/fechar configurações
 Tab // Auto foco no campo da questão
+Seta para Cima/Baixo // Voltar/Avançar no histórico de perguntas
 ```
