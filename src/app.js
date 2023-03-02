@@ -31,7 +31,7 @@ const App = async() => {
 
     const win = require("./browser-window.js")
     const tray = require("./tray.js")
-    const createNotification = require("./notification.js")
+    const { createNotification } = require("./notification.js")
 
     let isVisible = false
 

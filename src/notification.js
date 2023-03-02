@@ -1,12 +1,19 @@
 const { Notification } = require("electron")
 const { resolve } = require("path")
 
-function createNotification(props = { title: "", body: "" }) {
-    return new Notification({
-        ...props,
-        icon: resolve(__dirname, "./", "icons", "logo-open-ai.png"),
-        urgency: "low"
-    })
+function controlNotification() {
+
+    const createNotification = (props = { title: "", body: "" }) => {
+        return new Notification({
+            ...props,
+            icon: resolve(__dirname, "./", "icons", "logo-open-ai.png"),
+            urgency: "low"
+        })
+    }
+
+    return {
+        createNotification
+    }
 }
 
-module.exports = createNotification
+module.exports = controlNotification()
