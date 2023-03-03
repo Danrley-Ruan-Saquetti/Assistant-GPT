@@ -276,11 +276,27 @@ const writeHistory = ({key}) => {
     }
 }
 
+const eventOffline = () => {
+    const divMain = createBlockQuestion()
+    const answerEl = writeAnswer("Connection error with internet :(", "System")
+
+    addElement(divMain, answerEl)
+}
+
+const eventOnline = () => {
+    const divMain = createBlockQuestion()
+    const answerEl = writeAnswer("Computer connected to the internet :)", "System")
+
+    addElement(divMain, answerEl)
+}
+
 window.onload = () => {
     MAP_SETTINGS.apiKey = getLocalStorageSettings("settings.key") || null
     MAP_SETTINGS.parameters.tokens = getLocalStorageSettings("settings.parameters.tokens") || 2048
     MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.temperature") || 0.5
 
+    addEventListener("offline", eventOffline)
+    addEventListener("online", eventOnline)
     addEventListener("keydown", keydown)
     inputQuestion.addEventListener("keypress", keypress)
     inputQuestion.addEventListener("keydown", writeHistory)
