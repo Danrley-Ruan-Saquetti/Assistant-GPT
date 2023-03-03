@@ -144,6 +144,11 @@ const addElement = (parent, child) => {
 
 const writeTextQuestion = (text = "") => {
     inputQuestion.value = text
+    
+    setTimeout(() => {
+        inputQuestion.focus()
+        inputQuestion.setSelectionRange(text.length, text.length)
+    }, 0)
 }
 
 const toggleSettings = (value) => {
