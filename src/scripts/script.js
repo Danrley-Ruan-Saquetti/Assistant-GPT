@@ -103,6 +103,8 @@ const writeQuestion = (question = "") => {
     history.push(question)
     indexHistoryCurrent = history.length
 
+    saveLocalStorageSettings({key: "questions.history", value: history})
+
     const post = document.createElement("div")
     const author = document.createElement("span")
     const message = document.createElement("p")
@@ -242,8 +244,10 @@ const resetSettings = () => {
     MAP_SETTINGS_ELEMENTS.tokens.value = 2048
     MAP_SETTINGS_ELEMENTS.temperature.value = 0.5
 
+    history.splice(0, history.length)
+
     const divMain = createBlockQuestion()
-    const answerEl = writeAnswer("Settings reset", "System")
+    const answerEl = writeAnswer("Settings reset and history cleared", "System")
 
     addElement(divMain, answerEl)
 }
@@ -294,6 +298,16 @@ window.onload = () => {
     MAP_SETTINGS.apiKey = getLocalStorageSettings("settings.key") || null
     MAP_SETTINGS.parameters.tokens = getLocalStorageSettings("settings.parameters.tokens") || 2048
     MAP_SETTINGS.parameters.temperature = getLocalStorageSettings("settings.parameters.temperature") || 0.5
+
+    const questionsHistorySave = getLocalStorageSettings("questions.history")
+
+    if (questionsHistorySave) {
+        questionsHistorySave.forEach(quest => {
+            history.push(quest)
+        })
+    }
+
+    indexHistoryCurrent = history.length
 
     addEventListener("offline", eventOffline)
     addEventListener("online", eventOnline)

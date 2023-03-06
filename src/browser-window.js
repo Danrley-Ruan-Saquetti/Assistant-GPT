@@ -19,18 +19,18 @@ function createWindow() {
         icon: __dirname + "/icons/icon-open-ai.png",
         show: false,
         alwaysOnTop: true,
-        frame: false
+        // frame: false
     })
 
     win.hide()
 
     win.setPosition(width - boundsInitial.width + 6, height - boundsInitial.height - 40)
 
-    win.setMenu(null)
+    // win.setMenu(null)
 
     win.setSkipTaskbar(true)
 
-    win.loadFile("src/pages/index.html")
+    win.loadFile("src/index.html")
 
     return win
 }

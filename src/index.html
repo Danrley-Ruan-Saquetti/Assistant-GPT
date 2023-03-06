@@ -5,16 +5,22 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="../icons/icon-open-ai.png" />
+    <link rel="icon" type="image/svg+xml" href="icons/icon-open-ai.png" />
     <title>Chat GPT</title>
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 
 <body>
     <main class="panel" id="panel">
         <div class="actions-menu">
-            <button type="button" id="bt-settings-open" class="bt icon"><img src="../icons/settings.png" alt="Open Settings"></button>
-            <button type="button" id="bt-clear-history" class="bt icon"><img src="../icons/clear.png" alt="Clear History"></button>
+            <div class="tooltip-content">
+                <button type="button" id="bt-settings-open" class="bt icon"><img src="icons/settings.png" alt="Open Settings"></button>
+                <div class="tooltip left">Open Settings</div>
+            </div>
+            <div class="tooltip-content">
+                <button type="button" id="bt-clear-history" class="bt icon"><img src="icons/clear.png" alt="Clear History"></button>
+                <div class="tooltip left">Clear Chat</div>
+            </div>
         </div>
 
         <div class="session input-question-box">
@@ -49,7 +55,6 @@
                         <input type="number" min="0" name="input-parameter-temperature" id="input-parameter-temperature">
                     </div>
                 </div>
-                <div class="line"></div>
             </div>
         </div>
         <div class="actions">
@@ -59,7 +64,7 @@
         </div>
     </div>
 
-    <script src="../scripts/script.js" type="module"></script>
+    <script src="scripts/script.js" type="module"></script>
 </body>
 
 </html>

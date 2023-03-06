@@ -13,7 +13,11 @@ $radius: 2px;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
 }
 
 input,
@@ -36,9 +40,12 @@ body {
     min-height: 250px;
     padding: 20px 25px;
     padding-right: 50px;
-    font-size: 12px;
+    font-size: 1.6rem;
     background-color: $primary-color;
     color: #fff;
+    * {
+        letter-spacing: .02rem;
+    }
 }
 
 .line {
@@ -46,6 +53,76 @@ body {
     height: 0px;
     border-top: $border;
     margin-block: 8px 4px;
+}
+
+@mixin shadow {
+    filter: drop-shadow(6px 5px 2px rgba(0, 0, 0, .5));
+}
+
+@mixin visible-tooltip {
+    visibility: visible;
+    opacity: 1;
+    &.right {
+        left: 140%;
+    }
+    &.top {
+        bottom: 140%;
+    }
+    &.bottom {
+        top: 140%;
+    }
+    &.left {
+        right: 140%;
+    }
+}
+
+.tooltip-content {
+    position: relative;
+    text-transform: capitalize;
+    &:hover {
+        .tooltip {
+            @include visible-tooltip;
+        }
+    }
+}
+
+.tooltip {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    text-align: center;
+    transition: all .3s;
+    pointer-events: none;
+    z-index: 500;
+    font-size: 1.4rem;
+    white-space: nowrap;
+    background-color: $secondary-color;
+    border-radius: radius;
+    font-weight: 400;
+    color: #fff;
+    @include shadow;
+    &.right {
+        left: 120%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    &.top {
+        bottom: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    &.bottom {
+        top: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    &.left {
+        right: 120%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 }
 
 .bt {
@@ -100,7 +177,7 @@ body {
     max-width: 400px;
     height: 80%;
     max-height: 450px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, .5);
+    @include shadow;
     background-color: $secondary-color;
     &.active {
         display: flex;
@@ -109,7 +186,7 @@ body {
         display: flex;
         align-items: baseline;
         justify-content: space-between;
-        font-size: 20px;
+        font-size: 2rem;
         margin: 0 0 8px 8px;
     }
     .settings {
@@ -129,18 +206,19 @@ body {
                 flex-direction: column;
                 gap: 4px;
                 .input-box-header {
-                    font-size: 14px;
+                    font-size: 1.5rem;
                 }
                 input,
                 select {
                     padding: 6px 8px;
                     background-color: $primary-color;
                     border-radius: $radius;
-                    font-size: 12px;
+                    font-size: 1.2rem;
                     color: #fff;
                 }
                 label {
                     margin-left: 4px;
+                    font-size: 1.3rem;
                 }
                 .input-checkbox {
                     display: flex;
@@ -181,6 +259,7 @@ body {
         width: 30px;
         .bt.icon {
             width: 100%;
+            @include shadow;
             img {
                 width: 100%;
                 cursor: pointer;
@@ -190,13 +269,15 @@ body {
     .session {
         width: 100%;
         background-color: $secondary-color;
-        box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+        @include shadow;
+        font-size: 1.4rem;
         &.input-question-box {
             input {
                 border: none;
                 padding: 8px;
                 width: 100%;
                 height: 100%;
+                font-size: 1.3rem;
             }
         }
         &.panel-chat {
@@ -239,6 +320,7 @@ body {
                             padding: 12px;
                             border-radius: $radius;
                             background-color: $primary-color;
+                            font-size: 1.2rem;
                         }
                         &.question {
                             width: 100%;
