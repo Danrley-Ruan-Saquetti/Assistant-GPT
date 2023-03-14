@@ -11,60 +11,137 @@
 </head>
 
 <body>
-    <main class="panel" id="panel">
-        <div class="actions-menu">
-            <div class="tooltip-content">
-                <button type="button" id="bt-settings-open" class="bt icon"><img src="icons/settings.png" alt="Open Settings"></button>
-                <div class="tooltip left">Open Settings</div>
-            </div>
-            <div class="tooltip-content">
-                <button type="button" id="bt-clear-history" class="bt icon"><img src="icons/clear.png" alt="Clear History"></button>
-                <div class="tooltip left">Clear Chat</div>
-            </div>
-        </div>
-
-        <div class="session input-question-box">
-            <input autocomplete="off" type="text" name="question" id="input-question" class="session input-question" placeholder="Ask a question">
-        </div>
-
-        <div class="session panel-chat">
-            <div class="list" id="chat"></div>
-        </div>
-    </main>
-
-    <div class="panel-settings" id="panel-settings">
-        <div class="header-settings">
-            <span>Settings</span>
-        </div>
-        <div class="settings">
-            <div class="list">
-                <div class="input-box">
-                    <div class="input-box-header"><span>Key</span></div>
-                    <label for="input-key">Inform a KEY</label>
-                    <input type="text" name="input-key" id="input-key">
+    <div class="app">
+        <main class="panel" id="panel">
+            <div class="actions-menu">
+                <div class="tooltip-content">
+                    <button type="button" id="bt-settings-open" class="bt icon"><img src="icons/settings.png" alt="Open Settings"></button>
+                    <div class="tooltip left">Open Settings (Ctrl+Q)</div>
                 </div>
-                <div class="line"></div>
-                <div class="input-box">
-                    <div class="input-box-header"><span>Request Parameters</span></div>
-                    <div class="input-box">
-                        <label for="input-parameter-tokens">Inform the total number of characters</label>
-                        <input type="number" min="1" name="input-parameter-tokens" id="input-parameter-tokens">
-                    </div>
-                    <div class="input-box">
-                        <label for="input-parameter-temperature">Inform the creativity rate of the responses.</label>
-                        <input type="number" min="0" name="input-parameter-temperature" id="input-parameter-temperature">
-                    </div>
+                <div class="tooltip-content">
+                    <button type="button" id="bt-clear-history" class="bt icon"><img src="icons/clear.png" alt="Clear History"></button>
+                    <div class="tooltip left">Clear Chat (Alt+R)</div>
+                </div>
+                <div class="tooltip-content">
+                    <button type="button" id="bt-about" class="bt icon"><img src="icons/about.png" alt="About the Assistant GPT"></button>
+                    <div class="tooltip left">About the Assistant GPT</div>
                 </div>
             </div>
+
+            <div class="session input-question-box">
+                <input autocomplete="off" type="text" name="question" id="input-question" class="session input-question" placeholder="Ask a question">
+            </div>
+
+            <div class="session panel-chat">
+                <div class="list" id="chat"></div>
+            </div>
+        </main>
+
+        <div class="panel-settings window-modal" id="panel-settings">
+            <div class="header-model">
+                <span>Settings</span>
+            </div>
+            <div class="list-content">
+                <div class="list">
+                    <div class="box">
+                        <div class="box-header"><span># Key</span></div>
+                        <div class="box-content">
+                            <label for="input-key">Inform a KEY</label>
+                            <input type="text" name="input-key" id="input-key">
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="box">
+                        <div class="box-header"><span># Request Parameters</span></div>
+                        <div class="box-content" style="margin-inline: 0;">
+                            <div class="box" style="margin-bottom: 8px;">
+                                <div class="box-content">
+                                    <label for="input-parameter-tokens">Inform the total number of characters</label>
+                                    <input type="number" min="1" name="input-parameter-tokens" id="input-parameter-tokens">
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="box-content">
+                                    <label for="input-parameter-temperature">Inform the creativity rate of the responses.</label>
+                                    <input type="number" min="0" name="input-parameter-temperature" id="input-parameter-temperature">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="bt input tertiary tooltip-content" id="bt-settings-reset">
+                    <span>Reset</span>
+                    <div class="tooltip top">Reset Settings</div>
+                </button>
+                <button type="button" class="bt input secondary tooltip-content" id="bt-settings-close">
+                    <span>Close</span>
+                    <div class="tooltip top">Close Settings (Ctrl+Q)</div>
+                </button>
+                <button type="button" class="bt input primary tooltip-content" id="bt-settings-save">
+                    <span>Save</span>
+                    <div class="tooltip top">Save Settings (Ctrl+S)</div>
+                </button>
+            </div>
         </div>
-        <div class="actions">
-            <button type="button" class="bt input tertiary" id="bt-settings-reset">Reset</button>
-            <button type="button" class="bt input secondary" id="bt-settings-close">Close</button>
-            <button type="button" class="bt input primary" id="bt-settings-save">Save</button>
+
+        <div class="panel-about window-modal" id="panel-about">
+            <div class="header-model">
+                <span>About</span>
+            </div>
+            <div class="list-content">
+                <div class="list">
+                    <div class="box">
+                        <div class="box-header"><span># About App</span></div>
+                        <div class="box-content">
+                            <p>&ensp;&ensp;&ensp;The GPT Assistant is an app focused on dialogue, used to answer the most varied questions, whether they are about problem issues, solving exercises or any other type of help, both personal and professional.</p>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="box">
+                        <div class="box-header"><span># Instructions</span></div>
+                        <div class="box-content">
+                            <p>&ensp;&ensp;&ensp;To use it, it is necessary to enter the settings and inform the API Key, available on the official OpenAI platform itself, in addition to other settings, such as the maximum number of characters and the creativity
+                                rate of responses, which varies between 0 (zero) and 2 (two).</p>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="box">
+                        <div class="box-header"><span># Shortcuts</span></div>
+                        <div class="box-content list">
+                            <span>Alt+Q - Abrir/fechar o assistente</span>
+                            <span>Ctrl+S - Salvar configurações</span>
+                            <span>Ctrl+R - Limpar mensagens</span>
+                            <span>Ctrl+Q - Abrir/fechar configurações</span>
+                            <span>Tab - Auto foco no campo da questão</span>
+                            <span>↑ ↓ - Voltar/Avançar no histórico de perguntas</span>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="box">
+                        <div class="box-header"><span># Author</span></div>
+                        <div class="box-content">
+                            <p>©Copyright <span id="copyright-year"></span> by Dan Ruan. All rights reversed.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="bt input secondary tooltip-content" id="bt-about-close">
+                    <span>Close</span>
+                    <div class="tooltip top">Close</div>
+                </button>
+            </div>
         </div>
     </div>
 
     <script src="scripts/script.js" type="module"></script>
+    <script>
+        const year = new Date(Date.now()).getFullYear()
+
+        document.getElementById("copyright-year").innerHTML = year
+    </script>
 </body>
 
 </html>

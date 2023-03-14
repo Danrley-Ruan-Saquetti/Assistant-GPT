@@ -4,10 +4,13 @@ const panel = document.getElementById("panel")
 const chat = document.getElementById("chat")
 const btClearHistory = document.getElementById("bt-clear-history")
 const btSettingsOpen = document.getElementById("bt-settings-open")
+const btAbout = document.getElementById("bt-about")
 const btSettingsClose = document.getElementById("bt-settings-close")
+const btAboutClose = document.getElementById("bt-about-close")
 const btSettingsReset = document.getElementById("bt-settings-reset")
 const btSettingsSave = document.getElementById("bt-settings-save")
 const panelSettings = document.getElementById("panel-settings")
+const panelAbout = document.getElementById("panel-about")
 
 const history = []
 let indexHistoryCurrent = 0
@@ -65,7 +68,7 @@ async function sendQuestion() {
 }
 
 // Api
-const requestApi = async(body = "") => {
+const requestApi = async (body = "") => {
     const response = await fetch("https://api.openai.com/v1/completions", {
         method: "POST",
         headers: {
@@ -103,7 +106,7 @@ const writeQuestion = (question = "") => {
     history.push(question)
     indexHistoryCurrent = history.length
 
-    saveLocalStorageSettings({key: "questions.history", value: history})
+    saveLocalStorageSettings({ key: "questions.history", value: history })
 
     const post = document.createElement("div")
     const author = document.createElement("span")
@@ -146,7 +149,7 @@ const addElement = (parent, child) => {
 
 const writeTextQuestion = (text = "") => {
     inputQuestion.value = text
-    
+
     setTimeout(() => {
         inputQuestion.focus()
         inputQuestion.setSelectionRange(text.length, text.length)
@@ -154,7 +157,17 @@ const writeTextQuestion = (text = "") => {
 }
 
 const toggleSettings = (value) => {
+    if (value && panelAbout.classList.contains("active")) { return }
+
     panelSettings.classList.toggle("active", value)
+    panel.classList.toggle("focus-out", value)
+
+}
+
+const toggleAbout = (value) => {
+    if (value && panelSettings.classList.contains("active")) { return }
+
+    panelAbout.classList.toggle("active", value)
     panel.classList.toggle("focus-out", value)
 }
 
@@ -221,9 +234,9 @@ const saveSettings = () => {
     MAP_SETTINGS.parameters.tokens = Number(MAP_SETTINGS_ELEMENTS.tokens.value)
     MAP_SETTINGS.parameters.temperature = Number(MAP_SETTINGS_ELEMENTS.temperature.value)
 
-    saveLocalStorageSettings({key: "settings.key", value: MAP_SETTINGS.apiKey})
-    saveLocalStorageSettings({key: "settings.parameters.tokens", value: MAP_SETTINGS.parameters.tokens})
-    saveLocalStorageSettings({key: "settings.parameters.temperature", value: MAP_SETTINGS.parameters.temperature})
+    saveLocalStorageSettings({ key: "settings.key", value: MAP_SETTINGS.apiKey })
+    saveLocalStorageSettings({ key: "settings.parameters.tokens", value: MAP_SETTINGS.parameters.tokens })
+    saveLocalStorageSettings({ key: "settings.parameters.temperature", value: MAP_SETTINGS.parameters.temperature })
 
     const divMain = createBlockQuestion()
     const answerEl = writeAnswer("Settings saved", "System")
@@ -234,7 +247,7 @@ const saveSettings = () => {
 }
 
 const resetSettings = () => {
-    removeLocalStorageSettings({clear: true})
+    removeLocalStorageSettings({ clear: true })
 
     MAP_SETTINGS.apiKey = null
     MAP_SETTINGS.parameters.tokens = 2048
@@ -253,23 +266,23 @@ const resetSettings = () => {
 }
 
 // Events
-const keypress = ({key}) => {
-    if (inputQuestion.value && key === "Enter") {sendQuestion()}
+const keypress = ({ key }) => {
+    if (inputQuestion.value && key === "Enter") { sendQuestion() }
 }
 
 const keydown = ({ code, ctrlKey }) => {
-    if (code == "Tab" && !panelSettings.classList.contains("active")) {setTimeout(() => inputQuestion.focus(), 0)}
+    if (code == "Tab" && !panelSettings.classList.contains("active")) { setTimeout(() => inputQuestion.focus(), 0) }
 
-    if (!ctrlKey) {return}
+    if (!ctrlKey) { return }
 
     if (code == "KeyS" && panelSettings.classList.contains("active")) saveSettings()
-    
+
     if (code == "KeyQ") { panelSettings.classList.contains("active") ? closeSettings() : openSettings() }
 
     if (code == "KeyR") clearPanel()
 }
 
-const writeHistory = ({key}) => {
+const writeHistory = ({ key }) => {
     if (key == "ArrowUp" && history.length > 0 && indexHistoryCurrent > 0) {
         indexHistoryCurrent--
         writeTextQuestion(history[indexHistoryCurrent])
@@ -319,4 +332,6 @@ window.onload = () => {
     btSettingsReset.addEventListener("click", resetSettings)
     btSettingsSave.addEventListener("click", saveSettings)
     btClearHistory.addEventListener("click", clearPanel)
+    btAbout.addEventListener("click", () => toggleAbout(true))
+    btAboutClose.addEventListener("click", () => toggleAbout(false))
 }
