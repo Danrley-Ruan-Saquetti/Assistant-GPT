@@ -9,7 +9,7 @@ const { height, width } = win2.getBounds()
 win2.close()
 
 function createWindow() {
-    const boundsInitial = { width: 395, height: 395 }
+    const boundsInitial = { width: 415, height: 415 }
     const win = new BrowserWindow({
         ...boundsInitial,
         minWidth: 250,
